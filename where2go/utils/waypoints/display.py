@@ -4,6 +4,8 @@ from where2go.utils.display_utils import rtr
 
 class Display:
 
+    _click_event_format = "simple"
+
     def transform(waypoint: Waypoint):
         x, y, z = waypoint.pos
         if waypoint.dimension == "overworld":
@@ -28,7 +30,18 @@ class Display:
         return rtr(f"waypoints.display.pos.{waypoint.dimension}", x=x, y=y, z=z)
     
     def xaero_click_event(waypoint: Waypoint) -> RText:
-        return RText("[+X]", color=RColor.gold).c(RAction.run_command, waypoint.get_xaero_waypoint_add()).h(rtr("waypoints.display.hover_text.xaero").set_color(RColor.gold))
+        simple = RText("[+X]", color=RColor.gold).c(RAction.run_command, waypoint.get_xaero_waypoint_add()).h(rtr("waypoints.display.hover_text.xaero").set_color(RColor.gold))
+        match Display._click_event_format:
+            case "simple":
+                return simple
+            case "compatible":
+                return RTextList(RText("[", color=RColor.gold), 
+                                 RText("+X", color=RColor.gold).c(RAction.run_command, waypoint.get_xaero_waypoint_add()).h(rtr("waypoints.display.hover_text.xaero").set_color(RColor.gold)),
+                                 RText("#", color=RColor.yellow).c(RAction.run_command, waypoint.get_xaero_waypoint()).h(rtr("waypoints.display.hover_text.xaero_compatible").set_color(RColor.gold)),
+                                 RText("]", color=RColor.gold))
+            case _:
+                return simple
+
     
     def temporary_click_event(waypoint: Waypoint, command_prefix) -> RText:
         return RText("[+]", color=RColor.green).c(RAction.run_command, f"{command_prefix} add {waypoint.get_xaero_waypoint()}").h(rtr("waypoints.display.hover_text.temporary").set_color(RColor.green))

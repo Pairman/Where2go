@@ -9,6 +9,7 @@ where2go:
         the_end: §5the_end §d[{x}, {y}, {z}§d]§f
       hover_text:
         xaero: Add Xaero's waypoint
+        xaero_compatible: Add Xaero's waypoint §7(compatible mode)
         temporary: Add a temporary waypoint to sharing waypoints
       
       show: §e@§f {name}§r §7-§f

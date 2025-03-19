@@ -9,6 +9,7 @@ where2go:
         the_end: §5末地 §d[{x}, {y}, {z}§d]§f
       hover_text:
         xaero: 添加Xaero坐标点
+        xaero_compatible: 添加Xaero坐标点§7(兼容模式)
         temporary: 将临时坐标点添加至共享
       
       show: §e@§f {name}§r §7-§f

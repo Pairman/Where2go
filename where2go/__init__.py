@@ -47,6 +47,8 @@ class Proxy:
         server.register_help_message(whereis_prefix, rtr("help.whereis"))
         fastsearch_prompt = self.config.command.fastsearch_prompt
         server.register_help_message(fastsearch_prompt, rtr("help.fastsearch", prompt=fastsearch_prompt))
+
+        Display._click_event_format = self.config.xaero.click_event_format
     
 
     def help_msg(self, source: CommandSource, context: CommandContext):
@@ -156,12 +158,18 @@ class Proxy:
     def on_user_info(self, server: PluginServerInterface, info: Info):
         waypoint = Waypoint.transform_xaero_waypoint(info.content)
         if waypoint:
-            server.say(Display.temporary(waypoint, self.config.command.waypoints))
+            search = self.waypoint_manager.search_distance(waypoint.pos, waypoint.dimension, 0)
+            if not search:
+                server.say(Display.temporary(waypoint, self.config.command.waypoints))
+                return
+            search = search[0]
+            server.say(Display.show(search["waypoint"], search["id"]))
             return
+            
         fastsearch = re.match(self.config.command.fastsearch_regex, info.content)
         if not fastsearch:
             return
-        name = fastsearch.groups()[0]
+        name = fastsearch.group("name")
         target = self.waypoint_manager.search_name(name)
         if target:
             server.say(rtr("command.search.title", name=name, count=len(target)))
