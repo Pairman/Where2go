@@ -31,9 +31,44 @@
 
 聊天发送`XXX在哪`即可快速查询坐标点`XXX`或玩家`XXX`的位置
 
-# 演示
+## 演示
 
 ![show](show.jpg)
+
+## 配置文件
+
+### xaero
+
+**click_event_format** `str`
+
+- 添加Xaero坐标点的按钮格式。可选：
+  + `"simple"`：样式为`[+X]`，简易模式，不支持**Xaero's Minimap v24.6.0及以上**的版本。
+  + `"compatible"`：样式为`[+X#]`，兼容模式。点击`+X`部分可以让旧版本Xaero直接添加坐标点，点击`#`部分可以通过玩家发送坐标点信息的方式，让客户端Xaero识别到坐标点分享信息，出现`[add]`按钮，点击`[add]`即可添加坐标点。
+
+*我们暂不清楚Xaero's Minimap v24.6+的坐标点添加文本格式是什么样的。如果你知晓新的格式，请通过issue反馈*
+
+### command
+
+**waypoints** `str`
+- 坐标点相关指令的指令前缀
+
+**whereis** `str`
+- 查询玩家位置的指令前缀
+
+**here** `str`
+- 发送自身位置的指令
+
+**fastsearch_regex** `str`
+- 快速询问的正则匹配。如果你想要支持英文，可以改成像这样：`[wW]here ((is)|(are)|(r)) (?P<name>\w+)\??`
+
+**fastsearch_prompt** `str`
+- 快速询问在MCDR的`!!help`界面显示的命令帮助
+
+### player_api
+
+获取玩家位置等指令、识别指令回显相关。一般服务端无需更改。
+
+### 
 
 # ToDo
 
